@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const UserModel = require("../model/user.model.js"); 
 
-//Login 
-
 router.post("/sessionlogin", async (req, res) => {
     const {email, password} = req.body; 
     try {

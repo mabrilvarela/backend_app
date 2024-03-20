@@ -3,30 +3,28 @@ const session = require("express-session");
 const FileStore = require("session-file-store");
 const fileStore = FileStore(session);
 const app = express();
+const exphbs = require("express-handlebars");
 const PUERTO = 8080;
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const userRouter = require("./routes/user.router.js");
 const sessionRouter = require("./routes/sessions.router.js");
+const initializePassport = require("./config/passport.config.js");
+const passport = require("passport");
 require("../src/database.js");
 
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
+app.use(express.static("./src/public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
-app.use(session({
-
-    secret: "secretcoder", 
-    resave: true,  
-    saveUninitialized: true, 
-    store: MongoStore.create({
-        mongoUrl: "mongodb+srv://mabrilvarela:coderhouse@cluster0.ddtseea.mongodb.net/Ecommerce?retryWrites=true&w=majority", ttl: 100
-    })
-
-}))
 
 app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
+app.use("/", viewsRouter);
 
 
 app.get("/login", (req, res) => {
