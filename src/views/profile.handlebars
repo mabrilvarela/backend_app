@@ -1,5 +1,4 @@
-<h1>Mi Perfil</h1>
-<p>Bienvenido!, {{user.first_name}} {{user.last_name}}!</p>
-<p>Email: {{user.email}}</p>
-<p>Edad: {{user.age}}</p>
-<a href="/api/sessions/logout">Logout</a>
+<h1> Bienvenido!, {{usuario}} </h1>
+<form action="/logout" method="POST">
+    <button type="submit"> Logout </button>
+</form>

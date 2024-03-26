@@ -7,8 +7,8 @@ const exphbs = require("express-handlebars");
 const PUERTO = 8080;
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
-const userRouter = require("./routes/user.router.js");
-const sessionRouter = require("./routes/sessions.router.js");
+const userRouter = require("./routes/user.routes.js");
+const viewsRouter = require("./routes/views.router.js")
 const initializePassport = require("./config/passport.config.js");
 const passport = require("passport");
 require("../src/database.js");
@@ -21,9 +21,10 @@ app.use(express.static("./src/public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+app.use(passport.initialize());
+initializePassport();
 
-app.use("/api/users", userRouter);
-app.use("/api/sessions", sessionRouter);
+app.use("/", userRouter);
 app.use("/", viewsRouter);
 
 
