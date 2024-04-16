@@ -1,5 +1,25 @@
 const mongoose = require("mongoose");
+const configObject = require("./config/config.js");
+const {mongo_url} = configObject;
 
-mongoose.connect("mongodb+srv://mabrilvarela:coderhouse@cluster0.ddtseea.mongodb.net/Tienda?retryWrites=true&w=majority")
-    .then(() => console.log("Conexion exitosa"))
-    .catch( () => console.log("Lamentablemente persisten los errores"))
+
+class dataBase {
+    static #instancia;
+
+    constructor() {
+        mongoose.connect(mongo_url);
+    }
+
+    static getInstancia(){
+        if(this.#instancia) {
+            console.log("Conexión previa");
+            return this.#instancia;
+        }
+
+        this.#instancia = new dataBase();
+        console.log("Conexión exitosa");
+        return this.#instancia;
+    }
+}
+
+module.exports = dataBase.getInstancia();

@@ -12,6 +12,8 @@ const viewsRouter = require("./routes/views.router.js")
 const initializePassport = require("./config/passport.config.js");
 const passport = require("passport");
 require("../src/database.js");
+const productsRouter = require("./routes/product.router.js");
+const cors = require("cors");
 
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
@@ -23,9 +25,11 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(passport.initialize());
 initializePassport();
+app.use(cors());
 
 app.use("/", userRouter);
 app.use("/", viewsRouter);
+app.use("/products", productsRouter);
 
 
 app.get("/login", (req, res) => {
